@@ -2,11 +2,39 @@ resource "aws_s3_bucket" "frontend_artifacts" {
   bucket = var.S3FrontEnd
   acl    = "public-read"
   policy = data.aws_iam_policy_document.website_policy.json
+  
   website {
     index_document = "index.html"
     error_document = "index.html"
   }
 }
+#<<TestTest
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket = aws_s3_bucket.frontend_artifacts.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_ownership_controls" "example" {
+  bucket = aws_s3_bucket.frontend_artifacts.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  depends_on = [
+	aws_s3_bucket_public_access_block.example,
+	aws_s3_bucket_ownership_controls.example,
+  ]
+
+  bucket = aws_s3_bucket.frontend_artifacts.id
+  acl    = "public-read"
+}
+# EndTestTestTest>>
 data "aws_iam_policy_document" "website_policy" {
   statement {
     actions = [
