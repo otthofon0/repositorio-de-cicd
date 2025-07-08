@@ -30,15 +30,15 @@ resource "aws_s3_bucket_ownership_controls" "example" {
   }
 }
 
-resource "aws_s3_bucket_acl" "example" {
-  depends_on = [
-	aws_s3_bucket_public_access_block.example,
-	aws_s3_bucket_ownership_controls.example,
-  ]
+# resource "aws_s3_bucket_acl" "example" {
+#   depends_on = [
+# 	aws_s3_bucket_public_access_block.example,
+# 	aws_s3_bucket_ownership_controls.example,
+#   ]
 
-  bucket = aws_s3_bucket.frontend_artifacts.id
-  acl    = "public-read"
-}
+#   bucket = aws_s3_bucket.frontend_artifacts.id
+#   acl    = "public-read"
+# }
 # EndTestTestTest>>
 data "aws_iam_policy_document" "website_policy" {
   statement {
