@@ -2,6 +2,11 @@ resource "aws_s3_bucket" "frontend_artifacts" {
   bucket = var.S3FrontEnd
   acl    = "public-read"
   policy = data.aws_iam_policy_document.website_policy.json
+
+  depends_on = [
+	aws_s3_bucket_public_access_block.example,
+	aws_s3_bucket_ownership_controls.example,
+  ]
   
   website {
     index_document = "index.html"
